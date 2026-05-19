@@ -1696,6 +1696,15 @@ function init() {
   // Default to Thai on first load
   setLang('th');
 
+  // Restore player identity from a previous session if present.
+  // This stops players from re-entering name/AID after each game-over reload.
+  const stored = loadPlayerIdentity();
+  if (stored) {
+    applyStoredIdentity(stored);
+  } else {
+    setTimeout(() => document.getElementById('nameInput').focus(), 100);
+  }
+
   // Enter key on name inputs confirms
   ['nameInput', 'aidInput'].forEach(id => {
     const el = document.getElementById(id);
@@ -1714,8 +1723,6 @@ function init() {
     counter.textContent = e.target.value.length + ' / 25';
     counter.classList.toggle('complete', e.target.value.length === 25);
   });
-  // Focus name field
-  setTimeout(() => document.getElementById('nameInput').focus(), 100);
 
   setInterval(tiltLoop, 50);
 }
@@ -3144,10 +3151,29 @@ function gameOver() {
   // Submit to leaderboard and show rank
   const rankEl = document.getElementById('finalRank');
   if (playerLocked && playerName && playerAid && score > 0) {
+    // Look up existing best BEFORE submitting so we can compare
+    const beforeEntries = loadLeaderboard();
+    const before = beforeEntries.find(e => e.aid === playerAid);
+    const previousBest = before ? before.score : 0;
+    const isNewHigh = score > previousBest;
+
     lastSubmittedId = submitToLeaderboard(playerName, playerAid, score);
     const info = getPlayerRank(lastSubmittedId);
+    const afterEntries = loadLeaderboard();
+    const after = afterEntries.find(e => e.aid === playerAid);
+
     if (info && rankEl) {
-      rankEl.textContent = 'rank #' + info.rank + ' of ' + info.total;
+      let text;
+      if (isNewHigh) {
+        text = '★ NEW HIGH SCORE  ·  rank #' + info.rank + ' of ' + info.total;
+      } else if (after) {
+        text = 'rank #' + info.rank + ' of ' + info.total +
+               '  ·  best: ' + after.score.toLocaleString();
+      } else {
+        text = 'rank #' + info.rank + ' of ' + info.total;
+      }
+      rankEl.textContent = text;
+      rankEl.style.color = isNewHigh ? '#ffd070' : 'var(--accent)';
       rankEl.style.display = 'block';
     } else if (rankEl) {
       rankEl.style.display = 'none';
@@ -3169,6 +3195,42 @@ let playerName = '';
 let playerAid = '';
 let playerLocked = false;
 const LB_STORAGE_KEY = 'popoOdrop_leaderboard_v1';
+const PLAYER_STORAGE_KEY = 'popoOdrop_player_v1';
+
+function loadPlayerIdentity() {
+  try {
+    const raw = localStorage.getItem(PLAYER_STORAGE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (data && data.name && data.aid) return data;
+  } catch (e) {}
+  return null;
+}
+
+function savePlayerIdentity() {
+  try {
+    localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify({
+      name: playerName,
+      aid: playerAid,
+    }));
+  } catch (e) {}
+}
+
+function applyStoredIdentity(stored) {
+  playerName = stored.name;
+  playerAid = stored.aid;
+  playerLocked = true;
+  document.getElementById('nameModal').classList.remove('active');
+  const tag = document.getElementById('playerTag');
+  document.getElementById('ptName').textContent = playerName;
+  document.getElementById('ptAid').textContent = playerAid;
+  tag.style.display = 'flex';
+  // Set the (now-disabled) inputs to their stored values for the user to see
+  const nameEl = document.getElementById('nameInput');
+  const aidEl = document.getElementById('aidInput');
+  if (nameEl) { nameEl.value = playerName; nameEl.disabled = true; }
+  if (aidEl)  { aidEl.value = playerAid; aidEl.disabled = true; }
+}
 
 function confirmName() {
   const nameEl = document.getElementById('nameInput');
@@ -3214,6 +3276,7 @@ function confirmName() {
   playerName = name;
   playerAid = aid.toUpperCase();
   playerLocked = true;
+  savePlayerIdentity();
   document.getElementById('nameModal').classList.remove('active');
   const tag = document.getElementById('playerTag');
   document.getElementById('ptName').textContent = playerName;
@@ -3243,6 +3306,27 @@ function saveLeaderboard(entries) {
 function submitToLeaderboard(name, aid, finalScore) {
   if (!name || !aid || finalScore <= 0) return null;
   const entries = loadLeaderboard();
+
+  // One entry per AID. If this AID exists, update it only if the new score is higher.
+  const existingIdx = entries.findIndex(e => e.aid === aid);
+  if (existingIdx !== -1) {
+    const existing = entries[existingIdx];
+    if (finalScore > existing.score) {
+      // New high score — update and keep same id so the highlight follows them
+      existing.score = finalScore;
+      existing.name = name;             // allow display name updates (rare)
+      existing.timestamp = Date.now();
+      entries.sort((a, b) => b.score - a.score);
+      saveLeaderboard(entries);
+      return existing.id;
+    } else {
+      // Lower score — leaderboard stays as-is, but still return the id so the
+      // game-over screen / leaderboard can highlight the player's row.
+      return existing.id;
+    }
+  }
+
+  // First time playing under this AID — create a new entry
   const newEntry = {
     name: name,
     aid: aid,
@@ -3251,9 +3335,7 @@ function submitToLeaderboard(name, aid, finalScore) {
     id: 'e_' + Date.now() + '_' + Math.floor(Math.random() * 99999),
   };
   entries.push(newEntry);
-  // Sort descending by score
   entries.sort((a, b) => b.score - a.score);
-  // Cap at 100 entries
   if (entries.length > 100) entries.length = 100;
   saveLeaderboard(entries);
   return newEntry.id;
@@ -3317,10 +3399,11 @@ function hideLeaderboard() {
 }
 
 function confirmClearLeaderboard() {
-  if (!confirm('Clear ALL leaderboard entries? This cannot be undone.')) return;
+  if (!confirm('Clear ALL leaderboard entries and reset player identity? This cannot be undone.')) return;
   localStorage.removeItem(LB_STORAGE_KEY);
+  localStorage.removeItem(PLAYER_STORAGE_KEY);
   lastSubmittedId = null;
-  showLeaderboard();
+  location.reload();
 }
 
 function escapeHTML(s) {
