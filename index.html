@@ -217,7 +217,6 @@
     .score-value { font-size: 22px; }
     .lives-label, .score-label { font-size: 8px; letter-spacing: 0.18em; }
     .dot { width: 9px; height: 9px; }
-    .lb-btn { font-size: 8px; padding: 4px 8px; letter-spacing: 0.14em; }
     .stage-row { margin-top: 4px; }
     .stage-badge { font-size: 8px; padding: 2px 6px; letter-spacing: 0.16em; }
     .stage-btn { font-size: 8px; padding: 3px 7px; letter-spacing: 0.14em; }
@@ -230,18 +229,13 @@
     .hint { font-size: 9px; padding: 0 8px; }
     .player-tag { font-size: 9px; }
     .pt-aid { font-size: 8px; padding: 2px 6px; }
-    /* Modal text shrinks too */
     .name-modal-title { font-size: 32px !important; }
     .stage-modal-title { font-size: 30px !important; }
     .stage-modal-body { font-size: 11px; }
-    .overlay h2 { font-size: 38px; }
-    .overlay .final-score { font-size: 48px; }
-    .lb-title { font-size: 22px !important; }
-    .lb-row { font-size: 10px; padding: 7px 10px; gap: 8px; }
-    .lb-row.is-self::after { font-size: 8px; }
-    .lb-row .lb-name-text { font-size: 11px; }
-    .lb-row .lb-aid-text { font-size: 8px; }
-    .lb-row .lb-score-text { font-size: 13px; }
+    .result-game-title { font-size: 22px; }
+    .result-name { font-size: 18px; }
+    .result-score { font-size: 46px; }
+    .result-card { padding: 18px; max-width: 300px; }
     .bonus-banner { font-size: 26px; }
     .rainbow-tutorial { font-size: 11px; max-width: 240px; padding: 8px 12px; }
   }
@@ -249,23 +243,19 @@
     .title { font-size: 18px; }
     .score-value { font-size: 20px; }
     .btn { padding: 12px 3px; font-size: 9px; }
-    .btn .key { display: none; }   /* hide key hints; mobile users don't use keyboard anyway */
+    .btn .key { display: none; }
     .strip-stage { font-size: 7px; padding: 4px 6px; }
     .strip-divider { display: none; }
     .stage-strip { gap: 4px; }
     .name-modal-title { font-size: 26px !important; }
     .stage-modal-title { font-size: 24px !important; }
-    .overlay h2 { font-size: 32px; }
-    .overlay .final-score { font-size: 40px; }
-    .lb-list { max-height: 50vh; }
+    .result-score { font-size: 40px; }
+    .result-name { font-size: 16px; }
   }
-  /* Touch targets — bigger for fingers */
   @media (hover: none) and (pointer: coarse) {
     .btn { min-height: 56px; }
-    .lb-btn { min-height: 30px; }
     .stage-modal-btn { min-height: 48px; padding: 14px 24px !important; }
-    .lb-close { width: 40px; height: 40px; font-size: 22px; }
-    .name-field input { font-size: 16px; padding: 14px 16px; }  /* 16px prevents iOS zoom */
+    .name-field input { font-size: 16px; padding: 14px 16px; }
     .lang-btn { padding: 6px 12px; font-size: 10px; }
   }
 
@@ -314,27 +304,6 @@
     border-radius: 99px;
     letter-spacing: 0.1em;
     font-size: 9px;
-  }
-
-  /* ---- Leaderboard topbar button ---- */
-  .lb-btn {
-    margin-top: 6px;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    background: rgba(255,212,163,0.08);
-    border: 1px solid rgba(255,212,163,0.2);
-    color: var(--text);
-    padding: 5px 10px;
-    border-radius: 99px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .lb-btn:hover {
-    background: rgba(255,212,163,0.18);
-    color: var(--accent);
-    border-color: rgba(255,212,163,0.4);
   }
 
   /* ---- Name entry modal ---- */
@@ -426,174 +395,125 @@
     letter-spacing: 0.05em;
   }
 
-  /* ---- Leaderboard modal ---- */
-  .leaderboard-overlay {
-    gap: 12px;
-    padding: 24px 18px;
-    justify-content: flex-start;
-  }
-  .lb-header {
+  /* ---- Result card (game-over, screenshot-friendly) ---- */
+  .result-card {
     width: 100%;
+    max-width: 340px;
+    background: linear-gradient(160deg, rgba(42, 27, 61, 0.95) 0%, rgba(26, 20, 38, 0.95) 100%);
+    border: 2px solid rgba(255, 212, 163, 0.4);
+    border-radius: 18px;
+    padding: 22px 22px 18px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 4px;
+    gap: 14px;
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(255, 212, 163, 0.1),
+      inset 0 0 30px rgba(255, 122, 92, 0.06);
   }
-  .lb-title {
-    font-family: var(--font-display) !important;
-    font-weight: 900 !important;
-    font-size: 28px !important;
-    color: var(--accent) !important;
-    letter-spacing: -0.01em !important;
-    line-height: 1 !important;
-  }
-  .lb-close {
-    background: rgba(255,212,163,0.1);
-    border: 1px solid rgba(255,212,163,0.25);
-    color: var(--text);
-    font-size: 18px;
-    line-height: 1;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    padding: 0;
-  }
-  .lb-close:hover { color: var(--danger); border-color: var(--danger); }
-  .lb-self {
-    width: 100%;
-    background: linear-gradient(135deg, rgba(255,122,92,0.18), rgba(255,212,163,0.12));
-    border: 1px solid rgba(255,212,163,0.4);
-    border-radius: 10px;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: var(--font-mono);
-  }
-  .lb-self .lb-rank {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 22px;
-    color: var(--accent);
-    min-width: 38px;
-  }
-  .lb-self .lb-name {
-    flex: 1;
-    color: var(--text);
-    font-size: 12px;
-    letter-spacing: 0.06em;
-  }
-  .lb-self .lb-aid {
-    font-size: 9px;
-    color: var(--text-dim);
-    letter-spacing: 0.12em;
-  }
-  .lb-self .lb-score {
-    color: var(--accent);
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 18px;
-  }
-  .lb-list {
-    width: 100%;
-    flex: 1;
-    overflow-y: auto;
-    border: 1px solid rgba(255,212,163,0.12);
-    border-radius: 10px;
-    background: rgba(0,0,0,0.2);
-    min-height: 200px;
-    max-height: 320px;
-  }
-  .lb-row {
-    display: grid;
-    grid-template-columns: 38px 1fr auto;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    border-bottom: 1px solid rgba(255,212,163,0.06);
-    font-family: var(--font-mono);
-    font-size: 11px;
-  }
-  .lb-row:last-child { border-bottom: none; }
-  .lb-row.is-self {
-    background: rgba(255, 122, 92, 0.12);
-    box-shadow: inset 3px 0 0 var(--accent-hot);
-  }
-  .lb-row.is-self::after {
-    content: '◂ YOU';
-    color: var(--accent-hot);
-    font-size: 9px;
-    letter-spacing: 0.2em;
-  }
-  .lb-row.is-self {
-    grid-template-columns: 38px 1fr auto auto;
-  }
-  .lb-row .lb-rank {
-    color: var(--text-dim);
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 14px;
-  }
-  .lb-row:nth-child(1) .lb-rank { color: #ffd700; }
-  .lb-row:nth-child(2) .lb-rank { color: #c8d0d8; }
-  .lb-row:nth-child(3) .lb-rank { color: #d4a070; }
-  .lb-row .lb-name-aid {
+  .result-header {
+    text-align: center;
     display: flex;
     flex-direction: column;
     gap: 2px;
-    min-width: 0;
+    padding-bottom: 8px;
+    width: 100%;
+    border-bottom: 1px dashed rgba(255, 212, 163, 0.2);
   }
-  .lb-row .lb-name-text {
-    color: var(--text);
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .lb-row .lb-aid-text {
-    font-size: 9px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .lb-row .lb-score-text {
+  .result-game-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 26px;
+    letter-spacing: -0.02em;
     color: var(--accent);
+    line-height: 1;
+  }
+  .result-game-title em {
+    font-style: italic;
+    color: var(--accent-hot);
+    font-weight: 500;
+  }
+  .result-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--danger);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .result-player {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+  .result-name {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 22px;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    max-width: 280px;
+    overflow-wrap: break-word;
   }
-  .lb-empty {
-    text-align: center;
+  .result-aid {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
     color: var(--text-dim);
+    background: rgba(255, 212, 163, 0.08);
+    border: 1px solid rgba(255, 212, 163, 0.2);
+    padding: 4px 12px;
+    border-radius: 99px;
+    word-break: break-all;
+    max-width: 260px;
+  }
+  .result-score-wrap {
+    text-align: center;
+    padding: 6px 0 4px;
+  }
+  .result-score-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+  .result-score {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 56px;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 28px rgba(255, 212, 163, 0.4);
+  }
+  .result-stage {
     font-family: var(--font-mono);
     font-size: 11px;
-    padding: 40px 20px;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.2em;
+    color: var(--accent-hot);
+    text-align: center;
   }
-  .lb-footer {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .lb-clear {
-    font-size: 9px !important;
-    padding: 8px 14px !important;
-  }
-  .final-rank {
+  .result-footer {
     font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-top: 2px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255, 212, 163, 0.15);
+    width: 100%;
     text-align: center;
   }
   .overlay-buttons {
     display: flex;
     gap: 10px;
-    margin-top: 6px;
+    margin-top: 8px;
   }
   .lives { text-align: center; }
   .lives-label, .score-label {
@@ -1136,7 +1056,6 @@
     <div class="score-block">
       <div class="score-label">score</div>
       <div class="score-value" id="score">0</div>
-      <button class="lb-btn" onclick="showLeaderboard()" data-en="🏆 leaderboard" data-th="🏆 กระดานคะแนน">🏆 leaderboard</button>
     </div>
   </div>
 
@@ -1170,12 +1089,23 @@
       <div class="bonus-banner" id="bonusBanner"></div>
       <div class="rainbow-tutorial" id="rainbowTutorial" data-en="You made a rainbow! Tap it to pop for +1000!" data-th="ได้ดอกไม้สายรุ้งแล้ว! แตะเพื่อระเบิดรับ +1000!">You made a rainbow! Tap it to pop for +1000!</div>
       <div class="overlay" id="overlay">
-        <h2>Game Over</h2>
-        <div class="final-label">final score</div>
-        <div class="final-score" id="finalScore">0</div>
-        <div class="final-rank" id="finalRank"></div>
+        <div class="result-card" id="resultCard">
+          <div class="result-header">
+            <div class="result-game-title">Popo <em>O</em> Drop</div>
+            <div class="result-label" data-en="GAME OVER" data-th="จบเกม">GAME OVER</div>
+          </div>
+          <div class="result-player">
+            <div class="result-name" id="resultName"></div>
+            <div class="result-aid" id="resultAid"></div>
+          </div>
+          <div class="result-score-wrap">
+            <div class="result-score-label" data-en="FINAL SCORE" data-th="คะแนนสุดท้าย">FINAL SCORE</div>
+            <div class="result-score" id="finalScore">0</div>
+          </div>
+          <div class="result-stage" id="resultStage"></div>
+          <div class="result-footer" data-en="screenshot to share" data-th="แคปภาพเพื่อแชร์">screenshot to share</div>
+        </div>
         <div class="overlay-buttons">
-          <button class="stage-modal-btn secondary" onclick="showLeaderboard()" data-en="leaderboard" data-th="กระดานคะแนน">leaderboard</button>
           <button class="stage-modal-btn primary" onclick="restart()" data-en="play again" data-th="เล่นอีกครั้ง">play again</button>
         </div>
       </div>
@@ -1219,19 +1149,6 @@
           </div>
         </div>
         <button class="stage-modal-btn primary" onclick="confirmName()" data-en="start playing ▸" data-th="เริ่มเล่น ▸">start playing ▸</button>
-      </div>
-
-      <div class="overlay leaderboard-overlay" id="leaderboardModal">
-        <div class="lb-header">
-          <h2 class="lb-title" data-en="Leaderboard" data-th="กระดานคะแนน">Leaderboard</h2>
-          <button class="lb-close" onclick="hideLeaderboard()">×</button>
-        </div>
-        <div class="lb-self" id="lbSelf"></div>
-        <div class="lb-list" id="lbList"></div>
-        <div class="lb-footer">
-          <button class="stage-modal-btn secondary lb-clear" onclick="confirmClearLeaderboard()" data-en="clear all" data-th="ล้างทั้งหมด">clear all</button>
-          <button class="stage-modal-btn primary" onclick="hideLeaderboard()" data-en="close" data-th="ปิด">close</button>
-        </div>
       </div>
     </div>
   </div>
@@ -3144,42 +3061,20 @@ function gameOver() {
   engine.world.gravity.x = 0;
   tiltStrength = 0;
   document.getElementById('gameTilt').style.transform = 'rotate(0deg)';
-  // Read the score variable directly to guarantee popup matches HUD
+
+  // Populate the result card from current state
   document.getElementById('finalScore').textContent = score.toLocaleString();
   document.getElementById('score').textContent = score;
-
-  // Submit to leaderboard and show rank
-  const rankEl = document.getElementById('finalRank');
-  if (playerLocked && playerName && playerAid && score > 0) {
-    // Look up existing best BEFORE submitting so we can compare
-    const beforeEntries = loadLeaderboard();
-    const before = beforeEntries.find(e => e.aid === playerAid);
-    const previousBest = before ? before.score : 0;
-    const isNewHigh = score > previousBest;
-
-    lastSubmittedId = submitToLeaderboard(playerName, playerAid, score);
-    const info = getPlayerRank(lastSubmittedId);
-    const afterEntries = loadLeaderboard();
-    const after = afterEntries.find(e => e.aid === playerAid);
-
-    if (info && rankEl) {
-      let text;
-      if (isNewHigh) {
-        text = '★ NEW HIGH SCORE  ·  rank #' + info.rank + ' of ' + info.total;
-      } else if (after) {
-        text = 'rank #' + info.rank + ' of ' + info.total +
-               '  ·  best: ' + after.score.toLocaleString();
-      } else {
-        text = 'rank #' + info.rank + ' of ' + info.total;
-      }
-      rankEl.textContent = text;
-      rankEl.style.color = isNewHigh ? '#ffd070' : 'var(--accent)';
-      rankEl.style.display = 'block';
-    } else if (rankEl) {
-      rankEl.style.display = 'none';
-    }
-  } else if (rankEl) {
-    rankEl.style.display = 'none';
+  const nameEl = document.getElementById('resultName');
+  const aidEl  = document.getElementById('resultAid');
+  const stageEl = document.getElementById('resultStage');
+  if (nameEl) nameEl.textContent = playerName || '—';
+  if (aidEl)  aidEl.textContent  = playerAid  || '—';
+  if (stageEl) {
+    const stageMark = stage === 3 ? '⭐ STAGE 3'
+                    : stage === 2 ? '⭐ STAGE 2'
+                    :               '⭐ STAGE 1';
+    stageEl.textContent = stageMark;
   }
 
   document.getElementById('overlay').classList.add('active');
@@ -3189,12 +3084,11 @@ function gameOver() {
 function restart() { location.reload(); }
 
 // ============================================================
-// PLAYER IDENTITY + LEADERBOARD
+// PLAYER IDENTITY
 // ============================================================
 let playerName = '';
 let playerAid = '';
 let playerLocked = false;
-const LB_STORAGE_KEY = 'popoOdrop_leaderboard_v1';
 const PLAYER_STORAGE_KEY = 'popoOdrop_player_v1';
 
 function loadPlayerIdentity() {
@@ -3285,137 +3179,6 @@ function confirmName() {
   nameEl.disabled = true;
   aidEl.disabled = true;
 }
-
-function loadLeaderboard() {
-  try {
-    const raw = localStorage.getItem(LB_STORAGE_KEY);
-    if (!raw) return [];
-    const data = JSON.parse(raw);
-    return Array.isArray(data) ? data : [];
-  } catch (e) {
-    return [];
-  }
-}
-
-function saveLeaderboard(entries) {
-  try {
-    localStorage.setItem(LB_STORAGE_KEY, JSON.stringify(entries));
-  } catch (e) {}
-}
-
-function submitToLeaderboard(name, aid, finalScore) {
-  if (!name || !aid || finalScore <= 0) return null;
-  const entries = loadLeaderboard();
-
-  // One entry per AID. If this AID exists, update it only if the new score is higher.
-  const existingIdx = entries.findIndex(e => e.aid === aid);
-  if (existingIdx !== -1) {
-    const existing = entries[existingIdx];
-    if (finalScore > existing.score) {
-      // New high score — update and keep same id so the highlight follows them
-      existing.score = finalScore;
-      existing.name = name;             // allow display name updates (rare)
-      existing.timestamp = Date.now();
-      entries.sort((a, b) => b.score - a.score);
-      saveLeaderboard(entries);
-      return existing.id;
-    } else {
-      // Lower score — leaderboard stays as-is, but still return the id so the
-      // game-over screen / leaderboard can highlight the player's row.
-      return existing.id;
-    }
-  }
-
-  // First time playing under this AID — create a new entry
-  const newEntry = {
-    name: name,
-    aid: aid,
-    score: finalScore,
-    timestamp: Date.now(),
-    id: 'e_' + Date.now() + '_' + Math.floor(Math.random() * 99999),
-  };
-  entries.push(newEntry);
-  entries.sort((a, b) => b.score - a.score);
-  if (entries.length > 100) entries.length = 100;
-  saveLeaderboard(entries);
-  return newEntry.id;
-}
-
-function getPlayerRank(entryId) {
-  const entries = loadLeaderboard();
-  const idx = entries.findIndex(e => e.id === entryId);
-  return idx === -1 ? null : { rank: idx + 1, total: entries.length };
-}
-
-function showLeaderboard() {
-  const modal = document.getElementById('leaderboardModal');
-  const list = document.getElementById('lbList');
-  const selfBox = document.getElementById('lbSelf');
-  const entries = loadLeaderboard();
-
-  list.innerHTML = '';
-  if (entries.length === 0) {
-    list.innerHTML = '<div class="lb-empty">no scores yet — be the first!</div>';
-  } else {
-    entries.forEach((e, i) => {
-      const row = document.createElement('div');
-      row.className = 'lb-row';
-      if (lastSubmittedId && e.id === lastSubmittedId) row.classList.add('is-self');
-      row.innerHTML =
-        '<div class="lb-rank">#' + (i + 1) + '</div>' +
-        '<div class="lb-name-aid"><div class="lb-name-text">' +
-          escapeHTML(e.name) +
-        '</div><div class="lb-aid-text">' + escapeHTML(e.aid) + '</div></div>' +
-        '<div class="lb-score-text">' + e.score.toLocaleString() + '</div>';
-      list.appendChild(row);
-    });
-  }
-
-  // Player's most recent submission summary at the top
-  selfBox.style.display = lastSubmittedId ? 'flex' : 'none';
-  if (lastSubmittedId) {
-    const info = getPlayerRank(lastSubmittedId);
-    const self = entries.find(e => e.id === lastSubmittedId);
-    if (info && self) {
-      selfBox.innerHTML =
-        '<div class="lb-rank">#' + info.rank + '</div>' +
-        '<div class="lb-name">' + escapeHTML(self.name) +
-          ' <span class="lb-aid">' + escapeHTML(self.aid) + '</span>' +
-        '</div>' +
-        '<div class="lb-score">' + self.score.toLocaleString() + '</div>';
-      // Scroll the player's row into view after a tick
-      setTimeout(() => {
-        const selfRow = list.querySelector('.is-self');
-        if (selfRow) selfRow.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      }, 80);
-    }
-  }
-
-  modal.classList.add('active');
-}
-
-function hideLeaderboard() {
-  document.getElementById('leaderboardModal').classList.remove('active');
-}
-
-function confirmClearLeaderboard() {
-  if (!confirm('Clear ALL leaderboard entries and reset player identity? This cannot be undone.')) return;
-  localStorage.removeItem(LB_STORAGE_KEY);
-  localStorage.removeItem(PLAYER_STORAGE_KEY);
-  lastSubmittedId = null;
-  location.reload();
-}
-
-function escapeHTML(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-let lastSubmittedId = null;
 
 // ============================================================
 // LANGUAGE TOGGLE — flips every data-en/data-th element
