@@ -283,7 +283,172 @@
     font-weight: 500;
   }
 
-  /* ---- Help button (visible always, triggers modal on tap) ---- */
+  /* ---- Result submit status (under score, above footer) ---- */
+  .result-submit-status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-align: center;
+    text-transform: uppercase;
+    min-height: 14px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    margin-top: -4px;
+  }
+  .result-submit-status:empty { display: none; }
+  .result-submit-status.pending { color: var(--text-dim); }
+  .result-submit-status.success {
+    color: var(--ok);
+    background: rgba(126, 218, 154, 0.08);
+    border: 1px solid rgba(126, 218, 154, 0.3);
+  }
+  .result-submit-status.info {
+    color: var(--text);
+    background: rgba(255, 212, 163, 0.06);
+    border: 1px solid rgba(255, 212, 163, 0.15);
+  }
+  .result-submit-status.error {
+    color: var(--danger);
+    background: rgba(255, 85, 119, 0.08);
+    border: 1px solid rgba(255, 85, 119, 0.3);
+  }
+
+  /* ---- Leaderboard modal (Supabase-backed) ---- */
+  .leaderboard-overlay {
+    padding: 0 !important;
+    gap: 0 !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+  .lb-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 18px 12px;
+    border-bottom: 1px solid rgba(255,212,163,0.15);
+    flex-shrink: 0;
+  }
+  .lb-title {
+    font-family: var(--font-display) !important;
+    font-weight: 900 !important;
+    font-size: 26px !important;
+    color: var(--accent) !important;
+    letter-spacing: -0.01em !important;
+    line-height: 1 !important;
+  }
+  .lb-close {
+    background: rgba(255,212,163,0.1);
+    border: 1px solid rgba(255,212,163,0.25);
+    color: var(--text);
+    font-size: 20px;
+    line-height: 1;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .lb-close:hover { color: var(--danger); border-color: var(--danger); }
+  .lb-status {
+    text-align: center;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    padding: 16px 0 4px;
+    text-transform: uppercase;
+  }
+  .lb-status:empty { display: none; }
+  .lb-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 200px;
+  }
+  .lb-row {
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,212,163,0.06);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .lb-row.is-self {
+    background: rgba(255, 122, 92, 0.14);
+    border-color: rgba(255, 122, 92, 0.4);
+    box-shadow: inset 3px 0 0 var(--accent-hot);
+    grid-template-columns: 38px 1fr auto auto;
+  }
+  .lb-row.is-self::after {
+    content: '◂ YOU';
+    color: var(--accent-hot);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+  }
+  .lb-row .lb-rank {
+    color: var(--text-dim);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .lb-row:nth-child(1) .lb-rank { color: #ffd700; font-size: 16px; }
+  .lb-row:nth-child(2) .lb-rank { color: #c8d0d8; }
+  .lb-row:nth-child(3) .lb-rank { color: #d4a070; }
+  .lb-row .lb-name-aid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .lb-row .lb-name-text {
+    color: var(--text);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lb-row .lb-aid-text {
+    font-size: 8px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+  }
+  .lb-row .lb-score-text {
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .lb-empty {
+    text-align: center;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 40px 20px;
+    letter-spacing: 0.05em;
+  }
+  .lb-footer {
+    display: flex;
+    gap: 10px;
+    padding: 12px 18px 18px;
+    border-top: 1px solid rgba(255,212,163,0.15);
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .lb-btn { font-size: 8px !important; }
+
+
   .help-btn {
     margin-top: 6px;
     font-family: var(--font-mono);
@@ -1153,6 +1318,7 @@
     <div class="score-block">
       <div class="score-label">score</div>
       <div class="score-value" id="score">0</div>
+      <button class="help-btn lb-btn" onclick="showLeaderboard()" data-en="🏆 board" data-th="🏆 อันดับ">🏆 board</button>
       <button class="help-btn" id="helpBtn" onclick="showMobileHelp()" data-en="? how to play" data-th="? วิธีเล่น">? how to play</button>
     </div>
   </div>
@@ -1201,10 +1367,25 @@
             <div class="result-score" id="finalScore">0</div>
           </div>
           <div class="result-stage" id="resultStage"></div>
+          <div class="result-submit-status pending" id="resultSubmitStatus"></div>
           <div class="result-footer" data-en="screenshot to share" data-th="แคปภาพเพื่อแชร์">screenshot to share</div>
         </div>
         <div class="overlay-buttons">
+          <button class="stage-modal-btn secondary" onclick="showLeaderboard()" data-en="🏆 leaderboard" data-th="🏆 กระดานคะแนน">🏆 leaderboard</button>
           <button class="stage-modal-btn primary" onclick="restart()" data-en="play again" data-th="เล่นอีกครั้ง">play again</button>
+        </div>
+      </div>
+
+      <div class="overlay leaderboard-overlay" id="leaderboardModal">
+        <div class="lb-header">
+          <h2 class="lb-title" data-en="Leaderboard" data-th="กระดานคะแนน">Leaderboard</h2>
+          <button class="lb-close" onclick="hideLeaderboard()">×</button>
+        </div>
+        <div class="lb-status" id="lbStatus"></div>
+        <div class="lb-list" id="lbList"></div>
+        <div class="lb-footer">
+          <button class="stage-modal-btn secondary" onclick="showLeaderboard()" data-en="refresh" data-th="รีเฟรช">refresh</button>
+          <button class="stage-modal-btn primary" onclick="hideLeaderboard()" data-en="close" data-th="ปิด">close</button>
         </div>
       </div>
 
@@ -1422,6 +1603,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 <script>
 const { Engine, Render, Runner, Bodies, Body, World, Composite, Events } = Matter;
+
+// ============================================================
+// SUPABASE (cloud leaderboard)
+// ============================================================
+const SUPABASE_URL = 'https://ourultvhmtvwvciiebvw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_gN3VTOPcknGdG1yhMpeotg__Go1581f';
+const SUPABASE_TABLE = 'scores';
+
+// Anti-cheat (client-side; deterred ones, not stopped — see RLS for hard limits)
+const MAX_PLAUSIBLE_SCORE = 500000;   // anything above is rejected even client-side
+const MIN_GAME_DURATION_MS = 8000;     // games must last at least this long
+let gameStartedAt = 0;
+
 
 // ============================================================
 // EMBEDDED TIER TEXTURES (base64 data URLs, 1 per tier)
@@ -3163,7 +3357,7 @@ function tiltLoop() {
 // ============================================================
 // GAME OVER — always shows the latest score
 // ============================================================
-function gameOver() {
+async function gameOver() {
   if (isOver) return;
   isOver = true;
   engine.world.gravity.x = 0;
@@ -3187,9 +3381,218 @@ function gameOver() {
 
   document.getElementById('overlay').classList.add('active');
   playGameOver();
+
+  // Submit to Supabase (non-blocking — show status in the result card)
+  const statusEl = document.getElementById('resultSubmitStatus');
+  if (statusEl) {
+    statusEl.textContent = currentLang === 'th' ? 'กำลังส่งคะแนน…' : 'submitting…';
+    statusEl.className = 'result-submit-status pending';
+  }
+  if (playerLocked && playerName && playerAid && score > 0) {
+    const result = await submitScoreToSupabase(playerName, playerAid, score, stage);
+    if (statusEl) {
+      if (result.ok) {
+        if (result.isNewBest) {
+          statusEl.textContent = currentLang === 'th'
+            ? '★ คะแนนสูงสุดใหม่ บันทึกแล้ว'
+            : '★ NEW BEST · saved to leaderboard';
+          statusEl.className = 'result-submit-status success';
+        } else {
+          statusEl.textContent = currentLang === 'th'
+            ? 'คะแนนสูงสุดของคุณ: ' + (result.previousBest || 0).toLocaleString()
+            : 'your best: ' + (result.previousBest || 0).toLocaleString();
+          statusEl.className = 'result-submit-status info';
+        }
+      } else {
+        const map = {
+          too_high: currentLang === 'th' ? 'คะแนนสูงเกินไป — ไม่บันทึก' : 'score too high — not saved',
+          too_fast: currentLang === 'th' ? 'เกมจบเร็วเกินไป — ไม่บันทึก' : 'game too short — not saved',
+          network:  currentLang === 'th' ? 'ออฟไลน์ — คะแนนไม่ถูกส่ง' : 'offline — score not saved',
+          invalid:  currentLang === 'th' ? 'ข้อมูลไม่ถูกต้อง' : 'invalid data',
+        };
+        statusEl.textContent = map[result.reason] || (currentLang === 'th' ? 'ส่งคะแนนไม่สำเร็จ' : 'submit failed');
+        statusEl.className = 'result-submit-status error';
+      }
+    }
+  }
 }
 
 function restart() { location.reload(); }
+
+// ============================================================
+// SUPABASE: submit and fetch scores
+// ============================================================
+async function submitScoreToSupabase(name, aid, finalScore, stageReached) {
+  // Basic client-side guards
+  if (!name || !aid || finalScore <= 0) return { ok: false, reason: 'invalid' };
+  if (finalScore > MAX_PLAUSIBLE_SCORE) return { ok: false, reason: 'too_high' };
+  const duration = Date.now() - (gameStartedAt || Date.now());
+  if (duration < MIN_GAME_DURATION_MS) return { ok: false, reason: 'too_fast' };
+
+  const url = SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE;
+  const headers = {
+    'apikey': SUPABASE_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_KEY,
+    'Content-Type': 'application/json',
+    // Tell PostgREST to upsert on conflict and only succeed if the new score is higher
+    'Prefer': 'resolution=merge-duplicates,return=representation',
+  };
+  const body = {
+    player_name: name,
+    player_aid: aid,
+    score: finalScore,
+    stage_reached: stageReached,
+    updated_at: new Date().toISOString(),
+  };
+
+  try {
+    // First check the existing best for this AID (so we don't overwrite higher scores)
+    const checkResp = await fetch(
+      url + '?player_aid=eq.' + encodeURIComponent(aid) + '&select=score',
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+    );
+    let isNewBest = true;
+    let previousBest = 0;
+    if (checkResp.ok) {
+      const existing = await checkResp.json();
+      if (existing && existing.length > 0) {
+        previousBest = existing[0].score || 0;
+        if (finalScore <= previousBest) isNewBest = false;
+      }
+    }
+
+    if (!isNewBest) {
+      // Don't overwrite — but still considered a successful submission
+      return { ok: true, isNewBest: false, previousBest };
+    }
+
+    // Upsert (insert or update). on_conflict=player_aid uses our unique index.
+    const writeResp = await fetch(url + '?on_conflict=player_aid', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body),
+    });
+    if (!writeResp.ok) {
+      const text = await writeResp.text();
+      console.warn('Supabase write failed:', writeResp.status, text);
+      return { ok: false, reason: 'http_' + writeResp.status, detail: text };
+    }
+    return { ok: true, isNewBest: true, previousBest };
+  } catch (e) {
+    console.warn('Supabase error:', e);
+    return { ok: false, reason: 'network', detail: String(e) };
+  }
+}
+
+async function fetchTopScores(limit) {
+  const n = limit || 50;
+  const url = SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE +
+              '?select=player_name,player_aid,score,stage_reached,updated_at' +
+              '&order=score.desc&limit=' + n;
+  try {
+    const resp = await fetch(url, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    if (!resp.ok) return [];
+    return await resp.json();
+  } catch (e) {
+    console.warn('Supabase fetch failed:', e);
+    return [];
+  }
+}
+
+// Return the rank of the given AID (1-based), or null if not found.
+// Uses a HEAD request + Content-Range to count rows with higher scores.
+async function fetchPlayerRank(aid, ownScore) {
+  if (!aid) return null;
+  try {
+    // Count rows strictly above this score
+    const aboveUrl = SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE +
+                     '?select=player_aid&score=gt.' + ownScore;
+    const aboveResp = await fetch(aboveUrl, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'count=exact',
+        'Range-Unit': 'items',
+        'Range': '0-0',
+      }
+    });
+    let aboveCount = 0;
+    const cr = aboveResp.headers.get('content-range');
+    if (cr) {
+      const total = cr.split('/').pop();
+      aboveCount = parseInt(total, 10) || 0;
+    }
+    // Total scores
+    const totalUrl = SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE + '?select=player_aid';
+    const totalResp = await fetch(totalUrl, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'count=exact',
+        'Range-Unit': 'items',
+        'Range': '0-0',
+      }
+    });
+    let totalCount = 0;
+    const tcr = totalResp.headers.get('content-range');
+    if (tcr) totalCount = parseInt(tcr.split('/').pop(), 10) || 0;
+    return { rank: aboveCount + 1, total: totalCount };
+  } catch (e) {
+    return null;
+  }
+}
+
+// ============================================================
+// LEADERBOARD MODAL
+// ============================================================
+async function showLeaderboard() {
+  const modal = document.getElementById('leaderboardModal');
+  const list = document.getElementById('lbList');
+  const status = document.getElementById('lbStatus');
+  modal.classList.add('active');
+  list.innerHTML = '';
+  if (status) status.textContent = currentLang === 'th' ? 'กำลังโหลด…' : 'loading…';
+
+  const scores = await fetchTopScores(50);
+  if (status) status.textContent = '';
+  if (scores.length === 0) {
+    list.innerHTML = '<div class="lb-empty" data-en="no scores yet" data-th="ยังไม่มีคะแนน">' +
+      (currentLang === 'th' ? 'ยังไม่มีคะแนน' : 'no scores yet') + '</div>';
+    return;
+  }
+
+  scores.forEach((e, i) => {
+    const row = document.createElement('div');
+    row.className = 'lb-row';
+    if (e.player_aid === playerAid) row.classList.add('is-self');
+    row.innerHTML =
+      '<div class="lb-rank">#' + (i + 1) + '</div>' +
+      '<div class="lb-name-aid"><div class="lb-name-text">' +
+        escapeHTML(e.player_name) +
+      '</div><div class="lb-aid-text">' + escapeHTML(e.player_aid) + '</div></div>' +
+      '<div class="lb-score-text">' + (e.score || 0).toLocaleString() + '</div>';
+    list.appendChild(row);
+  });
+
+  // Scroll player row into view
+  setTimeout(() => {
+    const selfRow = list.querySelector('.is-self');
+    if (selfRow) selfRow.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, 80);
+}
+
+function hideLeaderboard() {
+  document.getElementById('leaderboardModal').classList.remove('active');
+}
+
+function escapeHTML(s) {
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 
 // ============================================================
 // MOBILE HELP MODAL — copies the side-panel content into a modal
@@ -3268,6 +3671,7 @@ function applyStoredIdentity(stored) {
   playerName = stored.name;
   playerAid = stored.aid;
   playerLocked = true;
+  gameStartedAt = Date.now();
   document.getElementById('nameModal').classList.remove('active');
   const tag = document.getElementById('playerTag');
   document.getElementById('ptName').textContent = playerName;
@@ -3324,6 +3728,7 @@ function confirmName() {
   playerName = name;
   playerAid = aid.toUpperCase();
   playerLocked = true;
+  gameStartedAt = Date.now();
   savePlayerIdentity();
   document.getElementById('nameModal').classList.remove('active');
   const tag = document.getElementById('playerTag');
