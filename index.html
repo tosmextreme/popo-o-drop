@@ -1373,7 +1373,6 @@
     <div class="score-block">
       <div class="score-label">score</div>
       <div class="score-value" id="score">0</div>
-      <button class="help-btn lb-btn" onclick="showLeaderboard()" data-en="🏆 board" data-th="🏆 อันดับ">🏆 board</button>
       <button class="help-btn" id="helpBtn" onclick="showMobileHelp()" data-en="? how to play" data-th="? วิธีเล่น">? how to play</button>
     </div>
   </div>
@@ -1426,12 +1425,11 @@
           <div class="result-footer" data-en="screenshot to share" data-th="แคปภาพเพื่อแชร์">screenshot to share</div>
         </div>
         <div class="overlay-buttons">
-          <button class="stage-modal-btn secondary" onclick="showLeaderboard()" data-en="🏆 leaderboard" data-th="🏆 กระดานคะแนน">🏆 leaderboard</button>
           <button class="stage-modal-btn primary" onclick="restart()" data-en="play again" data-th="เล่นอีกครั้ง">play again</button>
         </div>
       </div>
 
-      <div class="overlay leaderboard-overlay" id="leaderboardModal">
+      <div class="overlay leaderboard-overlay" id="leaderboardModal" style="display:none">
         <div class="lb-header">
           <h2 class="lb-title" data-en="Leaderboard" data-th="กระดานคะแนน">Leaderboard</h2>
           <button class="lb-close" onclick="hideLeaderboard()">×</button>
@@ -3620,23 +3618,9 @@ function maskAid(aid) {
 }
 
 async function showLeaderboard() {
-  const modal = document.getElementById('leaderboardModal');
-  const list = document.getElementById('lbList');
-  const status = document.getElementById('lbStatus');
-  modal.classList.add('active');
-  list.innerHTML = '';
-  if (status) status.textContent = currentLang === 'th' ? 'กำลังโหลด…' : 'loading…';
-
-  _lbScores = await fetchTopScores(100);
-  _lbPage = 0;
-
-  // If the player is somewhere in the top 100, jump to their page
-  if (playerAid) {
-    const idx = _lbScores.findIndex(e => e.player_aid === playerAid);
-    if (idx >= 0) _lbPage = Math.floor(idx / LB_PAGE_SIZE);
-  }
-
-  renderLeaderboardPage();
+  // Leaderboard is temporarily disabled while we sort out abuse.
+  // Scores are still being recorded server-side.
+  return;
 }
 
 function renderLeaderboardPage() {
